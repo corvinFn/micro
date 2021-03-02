@@ -69,13 +69,6 @@ func NewMicroService(opts ...MicroServiceOption) *MicroService {
 		},
 	}
 
-	// use golden-cloud/logger as default logger library
-	/*
-		if ms.logger == nil {
-			ms.logger = logger.GetLogger()
-		}
-	*/
-
 	for _, opt := range opts {
 		opt(ms)
 	}
@@ -125,7 +118,7 @@ func WithTracer() MicroServiceOption {
 // the micro service will be terminated.
 func WithWorker(worker func(context.Context) error) MicroServiceOption {
 	return func(ms *MicroService) {
-		ms.logger.Debug("Added worker")
+		println("Added worker")
 		ms.workers = append(ms.workers, worker)
 	}
 }
@@ -134,7 +127,7 @@ func WithWorker(worker func(context.Context) error) MicroServiceOption {
 // will be terminated.
 func WithContext(ctx context.Context) MicroServiceOption {
 	return func(ms *MicroService) {
-		ms.logger.Debug("Added context")
+		println("Added context")
 		ms.ctx = ctx
 	}
 }
@@ -146,7 +139,7 @@ func WithContext(ctx context.Context) MicroServiceOption {
 // }```
 func WithGRPC(preprocess func(srv *grpc.Server)) MicroServiceOption {
 	return func(ms *MicroService) {
-		ms.logger.Debug("Enabled GRPC")
+		println("Enabled GRPC")
 		ms.grpcFlag = true
 		ms.grpcPreprocess = append(ms.grpcPreprocess, preprocess)
 	}
@@ -155,7 +148,7 @@ func WithGRPC(preprocess func(srv *grpc.Server)) MicroServiceOption {
 // WithHTTPCORS enables cors for http endpoint. Should not enable in production.
 func WithHTTPCORS() MicroServiceOption {
 	return func(ms *MicroService) {
-		ms.logger.Debug("Enabled HTTP CORS")
+		println("Enabled HTTP CORS")
 		ms.httpCORS = true
 	}
 }
@@ -166,7 +159,7 @@ func WithHttpHandler(pattern string, handler http.Handler) MicroServiceOption {
 		if !strings.HasSuffix(pattern, "/") {
 			pattern = pattern + "/"
 		}
-		ms.logger.Debug("Added http handler for", pattern)
+		println("Added http handler for", pattern)
 
 		prefix := strings.TrimSuffix(pattern, "/")
 		ms.httpMux.Handle(pattern, http.StripPrefix(prefix, handler))
@@ -176,7 +169,7 @@ func WithHttpHandler(pattern string, handler http.Handler) MicroServiceOption {
 // WithPprof register the golang built-in profiling interface to `/debug` http path.
 func WithPprof() MicroServiceOption {
 	return func(ms *MicroService) {
-		ms.logger.Debug("Enabled pprof")
+		println("Enabled pprof")
 		ms.httpMux.HandleFunc("/debug/pprof/", pprof.Index)
 		ms.httpMux.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
 		ms.httpMux.HandleFunc("/debug/pprof/profile", pprof.Profile)
@@ -203,7 +196,7 @@ func WithPrometheus(handlerFuncs ...http.HandlerFunc) MicroServiceOption {
 	}
 
 	return func(ms *MicroService) {
-		ms.logger.Debug("Enabled prometheus")
+		println("Enabled prometheus")
 		ms.unaryInterceptors = append(ms.unaryInterceptors, grpc_prometheus.UnaryServerInterceptor)
 		ms.streamInterceptors = append(ms.streamInterceptors, grpc_prometheus.StreamServerInterceptor)
 		ms.grpcPreprocess = append(ms.grpcPreprocess, func(grpcServer *grpc.Server) {
@@ -222,7 +215,7 @@ func WithPrometheus(handlerFuncs ...http.HandlerFunc) MicroServiceOption {
 // WithGRPCUI registers a grpc ui for easy interact with GRPC server like postmen.
 func WithGRPCUI() MicroServiceOption {
 	return func(ms *MicroService) {
-		ms.logger.Debug("Enabled GRPC UI")
+		println("Enabled GRPC UI")
 		ms.withGRPCUI = true
 	}
 }
@@ -230,7 +223,7 @@ func WithGRPCUI() MicroServiceOption {
 // WithRestfulGateway binds GRPC gateway handler for all registered grpc service.
 func WithRestfulGateway(apiPrefix string, handler gatewayFunc) MicroServiceOption {
 	return func(ms *MicroService) {
-		ms.logger.Debug("Enabled GRPC HTTP Gateway", apiPrefix)
+		println("Enabled GRPC HTTP Gateway", apiPrefix)
 		prefix := strings.TrimSuffix(apiPrefix, "/")
 		ms.gatewayAPIPrefix = append(ms.gatewayAPIPrefix, prefix)
 		ms.gatewayHandlers = append(ms.gatewayHandlers, handler)

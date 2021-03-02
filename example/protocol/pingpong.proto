@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package examplepb;
+option go_package = ".;examplepb";
+
+import "google/api/annotations.proto";
+// import "google/protobuf/empty.proto";
+
+service ExampleSvc {
+    rpc Ping(PingReq) returns (PingRsp) {
+        option (google.api.http) = {
+            post: "/example/ping"
+            body: "*"
+        };
+    };
+
+}
+
+message PingReq {
+    string name = 1;
+}
+message PingRsp {
+    string msg = 1;
+}

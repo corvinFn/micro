@@ -6,7 +6,6 @@
 package micro
 
 type Logger interface {
-	Trace(...interface{})
 	Debug(...interface{})
 	Info(...interface{})
 	Infof(string, ...interface{})
