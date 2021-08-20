@@ -353,7 +353,9 @@ func (ms *MicroService) Serve(listener net.Listener) error {
 		terminated <- m.Serve()
 	}()
 	go func() {
-		ch := make(chan os.Signal)
+		// NOTE: Using an unbuffered channel risks missing signals sent on them
+		// as signal.Notify does not block when sending to a channel
+		ch := make(chan os.Signal, 1)
 		signal.Notify(ch,
 			syscall.SIGHUP,
 			syscall.SIGINT,
