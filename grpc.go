@@ -9,6 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"go.opencensus.io/plugin/ocgrpc"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/backoff"
 )
 
 // default timeout: 1s
@@ -29,6 +30,10 @@ func DialGRPCContext(ctx context.Context, url string) (*grpc.ClientConn, error) 
 		grpc.WithInsecure(),
 		grpc.WithBlock(),
 		grpc.WithStatsHandler(&ocgrpc.ClientHandler{}),
+		grpc.WithConnectParams(grpc.ConnectParams{
+			Backoff:           backoff.DefaultConfig,
+			MinConnectTimeout: time.Millisecond * 100,
+		}),
 		tracer.GrpcDialOption(),
 	)
 	if err != nil {
