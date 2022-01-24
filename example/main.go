@@ -2,12 +2,11 @@ package main
 
 import (
 	"log"
-	"micro"
 
-	pb "micro/example/protocol"
-	"micro/example/server"
-	"micro/gatewayhandler"
-
+	"github.com/corvinFn/micro"
+	pb "github.com/corvinFn/micro/example/protocol"
+	"github.com/corvinFn/micro/example/server"
+	"github.com/corvinFn/micro/gatewayhandler"
 	"google.golang.org/grpc"
 )
 

@@ -13,6 +13,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/corvinFn/micro/tracer"
 	"github.com/fullstorydev/grpcui/standalone"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
@@ -25,8 +26,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
 	"google.golang.org/grpc/reflection"
-
-	"micro/tracer"
 )
 
 // MicroService is a All-in-one container for hosting grpc and/or http server,

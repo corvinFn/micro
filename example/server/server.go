@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	pb "micro/example/protocol"
+	pb "github.com/corvinFn/micro/example/protocol"
 )
 
 type ExampleSvc struct {

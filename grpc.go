@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"micro/tracer"
+	"github.com/corvinFn/micro/tracer"
 
 	"github.com/pkg/errors"
 	"go.opencensus.io/plugin/ocgrpc"

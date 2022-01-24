@@ -7,8 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"micro/tracer"
-
+	"github.com/corvinFn/micro/tracer"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 )
