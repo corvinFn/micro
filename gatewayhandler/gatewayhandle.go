@@ -8,8 +8,9 @@ import (
 	"time"
 
 	"github.com/corvinFn/micro/tracer"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 type HttpServer struct {
@@ -42,12 +43,21 @@ func HttpHeaderMatcher(headerName string) (mdName string, ok bool) {
 func GatewayHandler(port int, registerEndPointFuncs []RegisterFunc) http.Handler {
 	addr := fmt.Sprintf("localhost:%d", port)
 
-	runtime.GlobalHTTPErrorHandler = HTTPError
+	runtime.WithErrorHandler(HTTPError)
 
 	ctx := context.Background()
 	mux := runtime.NewServeMux(
 		runtime.WithIncomingHeaderMatcher(HttpHeaderMatcher),
-		runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{OrigName: true, EmitDefaults: true}),
+		runtime.WithMarshalerOption(
+			runtime.MIMEWildcard,
+			&runtime.JSONPb{
+				MarshalOptions: protojson.MarshalOptions{
+					UseProtoNames:   true,
+					UseEnumNumbers:  true,
+					EmitUnpopulated: true,
+				},
+			},
+		),
 	)
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 

@@ -18,7 +18,7 @@ import (
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/cors"
@@ -313,7 +313,6 @@ func (ms *MicroService) Serve(listener net.Listener) error {
 			runtime.WithIncomingHeaderMatcher(ms.httpIncomingHeaderMatcher),
 			runtime.WithOutgoingHeaderMatcher(ms.httpOutgoingHeaderMatcher),
 		)
-		runtime.SetHTTPBodyMarshaler(gwmux)
 
 		for i := 0; i < len(ms.gatewayHandlers); i++ {
 			if err := ms.gatewayHandlers[i](ms.ctx, gwmux, ms.conn); err != nil {
