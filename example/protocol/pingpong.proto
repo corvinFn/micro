@@ -20,5 +20,7 @@ message PingReq {
     string name = 1;
 }
 message PingRsp {
-    string msg = 1;
+    int32 code = 1;
+    string message = 2;
+    string msg = 3;
 }

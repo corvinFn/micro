@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/corvinFn/micro"
+	"github.com/corvinFn/micro/example/lg"
 	pb "github.com/corvinFn/micro/example/protocol"
 	"github.com/corvinFn/micro/example/server"
 	"github.com/corvinFn/micro/gatewayhandler"
@@ -25,6 +26,7 @@ func main() {
 		micro.WithGRPC(func(grpcServer *grpc.Server) {
 			pb.RegisterExampleSvcServer(grpcServer, server)
 		}),
+		micro.WithLogger(lg.NewSimpleLogger()),
 		micro.WithHttpHandler("/", h),
 		micro.WithPprof(),
 		micro.WithHTTPCORS(),

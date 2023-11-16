@@ -8,6 +8,7 @@ import (
 )
 
 type ExampleSvc struct {
+	pb.UnimplementedExampleSvcServer
 }
 
 func NewExampleSvc() (*ExampleSvc, error) {
